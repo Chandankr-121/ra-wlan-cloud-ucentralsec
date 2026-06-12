@@ -127,7 +127,7 @@ namespace OpenWifi {
 
 			if (!PasswordHashedAlready) {
 				NewUser.id = MicroServiceCreateUUID();
-				NewUser.creationDate = OpenWifi::Now();
+				NewUser.modified = NewUser.creationDate = OpenWifi::Now();
 			}
 
 			//  if there is a password, we assume that we do not want email verification,
