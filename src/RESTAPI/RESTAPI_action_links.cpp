@@ -119,6 +119,12 @@ namespace OpenWifi {
 				return DoReturnA404();
 			}
 
+			if (Link.action != SecurityObjects::LinkActions::FORGOT_PASSWORD &&
+				Link.action != SecurityObjects::LinkActions::SUB_FORGOT_PASSWORD &&
+				!(Link.userAction && Link.action == SecurityObjects::LinkActions::VERIFY_EMAIL)) {
+				return DoReturnA404();
+			}
+
 			if (Password1 != Password2 || !AuthService()->ValidatePassword(Password2) ||
 				!AuthService()->ValidatePassword(Password1)) {
 				Poco::File FormFile{Daemon()->AssetDir() + "/password_reset_error.html"};
@@ -176,6 +182,7 @@ namespace OpenWifi {
 				UInfo.validated = true;
 				UInfo.lastEmailCheck = OpenWifi::Now();
 				UInfo.validationDate = OpenWifi::Now();
+				UInfo.changePassword = false;
 			}
 
 			UInfo.modified = OpenWifi::Now();
