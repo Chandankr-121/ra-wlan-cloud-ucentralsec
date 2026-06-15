@@ -171,6 +171,13 @@ namespace OpenWifi {
 				return SendHTMLFileBack(FormFile, FormVars);
 			}
 
+			if (Link.action == OpenWifi::SecurityObjects::LinkActions::VERIFY_EMAIL) {
+				UInfo.waitingForEmailCheck = false;
+				UInfo.validated = true;
+				UInfo.lastEmailCheck = OpenWifi::Now();
+				UInfo.validationDate = OpenWifi::Now();
+			}
+
 			UInfo.modified = OpenWifi::Now();
 			if (Link.userAction)
 				StorageService()->UserDB().UpdateUserInfo(UInfo.email, Link.userId, UInfo);
@@ -316,6 +323,10 @@ namespace OpenWifi {
 			return SendHTMLFileBack(FormFile, FormVars);
 		}
 
+		if (Link.userAction) {
+			return RequestResetPassword(Link);
+		}
+
 		Logger_.information(fmt::format("EMAIL-VERIFICATION(%s): For ID={}",
 										Request->clientAddress().toString(), UInfo.email));
 		UInfo.waitingForEmailCheck = false;
@@ -323,10 +334,7 @@ namespace OpenWifi {
 		UInfo.lastEmailCheck = OpenWifi::Now();
 		UInfo.validationDate = OpenWifi::Now();
 		UInfo.modified = OpenWifi::Now();
-		if (Link.userAction)
-			StorageService()->UserDB().UpdateUserInfo(UInfo.email, Link.userId, UInfo);
-		else
-			StorageService()->SubDB().UpdateUserInfo(UInfo.email, Link.userId, UInfo);
+		StorageService()->SubDB().UpdateUserInfo(UInfo.email, Link.userId, UInfo);
 		Types::StringPairVec FormVars{{"UUID", Link.id},
 									  {"USERNAME", UInfo.email},
 									  {"ACTION_LINK", MicroService::instance().GetUIURI()}};
