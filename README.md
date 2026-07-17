@@ -19,7 +19,7 @@ Within Mango Cloud, **OWSEC** serves as the central **Security, Authentication, 
 Key integrations include:
 * **Centralized Auth & Tokens**: Acts as the gatekeeper, issuing OAuth2 tokens for dashboard operators, subscribers, and external APIs.
 * **Service Discovery**: Manages and exposes system endpoints (via `/systemEndpoints`) so other microservices and UI components can discover and communicate with each other.
-* **Role-Based Access Control (RBAC)**: Enforces resource authorization policies, user management, password constraints, and multi-tenant security boundary validation.
+* **Role-Based Access Control**: Manages users, roles, resource-access policies and password requirements used by Mango Cloud services to enforce authorization and tenant isolation.
 
 ### Resources
 * [Mango Cloud Website](https://www.mangowifi.cloud/)
