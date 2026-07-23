@@ -129,10 +129,11 @@ namespace OpenWifi {
 				NewUser.id = MicroServiceCreateUUID();
 				NewUser.modified = NewUser.creationDate = OpenWifi::Now();
 			} else {
-				if (NewUser.creationDate == 0) {
-					NewUser.creationDate = OpenWifi::Now();
-				}
-				if (NewUser.modified == 0) {
+				if (NewUser.creationDate == 0 && NewUser.modified == 0) {
+					NewUser.modified = NewUser.creationDate = OpenWifi::Now();
+				} else if (NewUser.creationDate == 0) {
+					NewUser.creationDate = NewUser.modified;
+				} else if (NewUser.modified == 0) {
 					NewUser.modified = NewUser.creationDate;
 				}
 			}
