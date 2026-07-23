@@ -119,9 +119,16 @@ namespace OpenWifi {
 				return DoReturnA404();
 			}
 
-			if (Link.action != SecurityObjects::LinkActions::FORGOT_PASSWORD &&
-				Link.action != SecurityObjects::LinkActions::SUB_FORGOT_PASSWORD &&
-				!(Link.userAction && Link.action == SecurityObjects::LinkActions::VERIFY_EMAIL)) {
+			const bool ValidUserAction =
+				Link.userAction &&
+				(Link.action == SecurityObjects::LinkActions::FORGOT_PASSWORD ||
+				 Link.action == SecurityObjects::LinkActions::VERIFY_EMAIL);
+
+			const bool ValidSubscriberAction =
+				!Link.userAction &&
+				Link.action == SecurityObjects::LinkActions::SUB_FORGOT_PASSWORD;
+
+			if (!ValidUserAction && !ValidSubscriberAction) {
 				return DoReturnA404();
 			}
 
